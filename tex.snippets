@@ -15,6 +15,13 @@ keywords = { 'a' : '\\alpha',   'b' : '\\beta',   'g' : '\\gamma', 'd' : '\\delt
              'K' : '\\Kappa',   'L' : '\\Lambda', 'S' : '\\Sigma', 'O' : '\\Omega' }
 endglobal
 
+snippet  -= "defines" iA
+\equiv $0
+endsnippet
+
+snippet == "equals" iA
+&= $1 \\\\
+endsnippet
 
 snippet beg "begin{} / end{}" b
 \begin{$1}
@@ -100,6 +107,10 @@ snippet rd "to the ... power" iA
 ^{($1)}$0
 endsnippet
 
+priority 100
+snippet ** "cdot" iA
+\cdot 
+endsnippet
 
 
 
@@ -131,6 +142,12 @@ snippet im "Math Inline(non automatic wA)" w
 \(${1:${VISUAL}}\) $0
 endsnippet
 
+snippet ali "Align" b
+\begin{align*}
+	${1:${VISUAL}}
+.\end{align*}
+endsnippet
+
 context "math()"
 snippet '([A-Za-z])(\d)' "auto subscript" wrA
 `!p snip.rv = match.group(1)`_`!p snip.rv = match.group(2)`
@@ -152,7 +169,7 @@ endsnippet
 
 
 snippet sum "sum" w
-\sum_{n=${1:1}}^{${2:\infty}} ${3:a_n z^n}
+\sum_{${1:n=1}}^{${2:\infty}} ${3:a_n z^n}
 endsnippet
 
 snippet taylor "taylor" w
@@ -193,27 +210,23 @@ snippet () "left( right)" iA
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr "left( right)" i
+snippet lr( "left( right)" iA
 \left( ${1:${VISUAL}} \right) $0
 endsnippet
 
-snippet lr( "left( right)" i
-\left( ${1:${VISUAL}} \right) $0
-endsnippet
-
-snippet lr| "left| right|" i
+snippet lr| "left| right|" iA
 \left| ${1:${VISUAL}} \right| $0
 endsnippet
 
-snippet lr{ "left\{ right\}" i
+snippet lr{ "left\{ right\}" iA
 \left\\{ ${1:${VISUAL}} \right\\} $0
 endsnippet
 
-snippet lrb "left\{ right\}" i
+snippet lrb "left\{ right\}" iA
 \left\\{ ${1:${VISUAL}} \right\\} $0
 endsnippet
 
-snippet lr[ "left[ right]" i
+snippet lr[ "left[ right]" iA
 \left[ ${1:${VISUAL}} \right] $0
 endsnippet
 
@@ -371,13 +384,13 @@ endsnippet
 
 
 
-snippet enum "Enumerate" bA
+snippet enum "Enumerate" b
 \begin{enumerate}
 	\item $0
 \end{enumerate}
 endsnippet
 
-snippet item "Itemize" bA
+snippet item "Itemize" b
 \begin{itemize}
 	\item $0
 \end{itemize}
