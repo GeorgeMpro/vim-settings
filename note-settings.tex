@@ -1,0 +1,54 @@
+%allow example
+\usepackage{thmtools}
+
+%allows the Exercise command
+\usepackage{exercise}
+
+%Adding a remark
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+%Thm with manual numbers add [123] 
+\newtheorem{innercustomthm}{Theorem}
+\newenvironment{cthm}[1]
+{\renewcommand\theinnercustomthm{#1}\innercustomthm}
+{\endinnercustomthm}
+
+
+
+% Subsections with a,b,c letters
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
+% Subsubsection with roman numerals
+\renewcommand{\thesubsubsection}{\thesubsection.\roman{subsubsection}}
+
+% Define our numbered environment within the preamble
+\newcounter{exm}[section]
+\newenvironment{eg}[1][]{\refstepcounter{exm}\par\medskip
+\noindent \textbf{Example~\theexm. #1} \rmfamily}{\medskip}
+
+%Adding example
+%Changing "chapter" to section in nubmerwithin and renwcommand thechapter
+\colorlet{myred}{red!80!black}
+
+\declaretheoremstyle[
+spaceabove=\topsep, spacebelow=\topsep,
+headfont=\normalfont\color{myred},
+notefont=\mdseries\color{myred}, notebraces={(}{)},
+bodyfont=\normalfont,
+postheadspace=\newline,
+headpunct=,
+numberwithin=section,
+postheadhook=\leavevmode%
+\interlinepenalty 10000%
+\vskip-1.3\baselineskip%
+\noindent{\color{myred}\rule{\textwidth}{1pt}}%
+\interlinepenalty 10000%
+\vskip0.3\baselineskip\noindent,
+qed=\textcolor{myred}{$\blacksquare$}
+]{mystyle}
+\declaretheorem[style=mystyle]{example}
+
+\renewcommand\theexample{\thesection \arabic{example}}
+%End example set up
+
+
