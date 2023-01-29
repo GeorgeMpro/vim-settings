@@ -7,50 +7,136 @@ def env(name):
 	[x,y] = vim.eval("vimtex#env#is_inside('" + name + "')") 
 	return x != '0' and y != '0'
 
-keywords = { 'a' : '\\alpha',   'b' : '\\beta',   'g' : '\\gamma', 'd' : '\\delta',
-             'e' : '\\epsilon', 'z' : '\\zeta',   't' : '\\theta', 'i' : '\\iota',
+keywords = { 'a' : '\\alpha',   'b' : '\\beta',   'f' : '\\varphi','g' : '\\gamma', 'd' : '\\delta',
+             'e' : '\\varepsilon', 'z' : '\\zeta',   't' : '\\theta',  'i' : '\\iota',
              'k' : '\\kappa',   'l' : '\\lambda', 's' : '\\sigma', 'o' : '\\omega',
-             'A' : '\\Alpha',   'B' : '\\Beta',   'G' : '\\Gamma', 'D' : '\\Delta',
+             'A' : '\\Alpha',   'B' : '\\Beta',  'F' : '\\Phi', 'G' : '\\Gamma', 'D' : '\\Delta',
              'E' : '\\Epsilon', 'Z' : '\\Zeta',   'T' : '\\Theta', 'I' : '\\Iota',
              'K' : '\\Kappa',   'L' : '\\Lambda', 'S' : '\\Sigma', 'O' : '\\Omega' }
 endglobal
+
+context "math()"
+snippet "'([a,b,g,d,e,et,z,t,i,k,l,s,o,A,B,G,D,E,Z,T,I,K,L,S,O])" "Greek Letters" r
+`!p snip.rv = keywords[match.group(1)]`
+endsnippet
+
+context "math()"
+snippet \\ "backslash" i
+\backslash 
+endsnippet
+
+
+###Relations & Logical Operators###
 
 snippet  -= "defines" iA
 \equiv $0
 endsnippet
 
 snippet == "equals" iA
-&= $1 \\\\
+&= $1 
 endsnippet
 
-snippet beg "begin{} / end{}" b
-\begin{$1}
-	$0
-\end{$1}
+snippet ~= "congruent" iA
+ \cong 
 endsnippet
 
-snippet fig "figure no caption" i
-\begin{figure}[h]
-\centering
-\includegraphics[width=${1:0.7}\linewitdh]{$2}
-\end{figure}
-$0
+snippet =~ "approximate" iA
+ \approx
 endsnippet
 
 context "math()"
-snippet tx "Text block in math" iA
+snippet ~ "similar" i
+ \sim 
+endsnippet
+
+context "math()"
+snippet dt "double turnstile" i
+\vDash 
+endsnippet
+
+context "math()"
+snippet nt "negation double turnstile" i
+\nvDash 
+endsnippet
+
+context "math()"
+snippet vd "turnstile - snippet means v dash" i
+\vdash 
+endsnippet
+
+context "math()"
+snippet pro "statement is provable in Deductive System D" i
+\underset{${1:D}}{\vdash} ${2:\phi} $0
+endsnippet
+
+context "math()"
+snippet ROI "Describing Rule of Inference" i
+\left\\{ \frac{$1}{$2} \right\\} $0
+endsnippet
+
+
+context "math()"
+snippet and "logical and" i
+ \land 
+endsnippet
+
+context "math()"
+snippet nn "logical not" i
+ \lnot 
+endsnippet
+
+context "math()"
+snippet ! "not" i
+ \not 
+endsnippet
+
+
+context "math()"
+snippet or "logical or" i
+ \lor 
+endsnippet
+
+snippet modd "modulus" w
+ \equiv{$1} \pmod{$2} $0
+endsnippet
+
+snippet mod "modulus" w
+\equiv_{$1} $2 $0
+endsnippet
+
+
+###Formatting in Math Mode###
+
+context "math()"
+snippet tbx "Text block in math" iA
 \text{$1}$0
 endsnippet
 
+context "math()"
+snippet tx "Bold text in math" iA
+\mathbf{$1}$0
+endsnippet
+
 snippet tbx "Bold text"
-\textbf{$1}$0
+\textbf{$1} $0
 endsnippet
 
 snippet tix "Italic text"
-\textit{$1}$0
+\textit{$1} $0
+endsnippet
+
+context "math()"
+snippet under "Underset writing" i
+\underset{$1}{$2} $0
+endsnippet
+
+context "math()"
+snippet over "Overset writing" i
+\overset{$1}{$2} $0
 endsnippet
 
 
+###Customizing Letters###
 priority 10
 context "math()"
 snippet "bar" "bar" riA
@@ -76,7 +162,7 @@ snippet "([a-zA-Z])hat" "hat" riA
 endsnippet
 
 context "math()"
-snippet ~ "tilde" i
+snippet ^~ "tilde" i
 \tilde{$1}$0
 endsnippet
 
@@ -107,10 +193,20 @@ snippet rd "to the ... power" iA
 ^{($1)}$0
 endsnippet
 
+context "math()"
 priority 100
 snippet ** "cdot" iA
 \cdot 
 endsnippet
+
+context "math()"
+priority 100
+snippet xx "times" iA
+\times 
+endsnippet
+
+
+
 
 
 
@@ -123,6 +219,21 @@ snippet / "Fraction" i
 \\frac{$1}{$2}$0
 endsnippet
 
+context "math()"
+snippet BI "Binomial Identity" i
+\binom{$1}{$2} $0
+endsnippet
+
+context "math()"
+snippet QG "Quotient Group" iA
+\\faktor{$1}{$2}$0
+endsnippet
+
+context "math()"
+snippet OD "Order of a group/cycle" iA
+o\left( ${1:${VISUAL}} \right) $0
+endsnippet
+
 snippet mk "Math" w
 $${1}$`!p
 if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
@@ -130,22 +241,6 @@ if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
 else:
     snip.rv = ''
 `$2
-endsnippet
-
-snippet dm "Math Displayed(non automatic wA)" w
-\[
-${1:${VISUAL}}
-.\] $0
-endsnippet
-
-snippet im "Math Inline(non automatic wA)" w
-\(${1:${VISUAL}}\) $0
-endsnippet
-
-snippet ali "Align" b
-\begin{align*}
-	${1:${VISUAL}}
-.\end{align*}
 endsnippet
 
 context "math()"
@@ -163,11 +258,17 @@ _{$1}$0
 endsnippet
 
 context "math()"
-snippet sq "\sqrt{}" iA
+snippet sq "\sqrt{}" i
 \sqrt{${1:${VISUAL}}} $0
 endsnippet
 
 
+context "math()"
+snippet prod "product" i
+\prod\limits_{${1:k}=${2:0}}^{${3:\infty}} ${4:a_n z^n}
+endsnippet
+
+context "math()"
 snippet sum "sum" w
 \sum_{${1:n=1}}^{${2:\infty}} ${3:a_n z^n}
 endsnippet
@@ -199,41 +300,10 @@ snippet bmat "bmat" iA
 \begin{bmatrix} $1 \end{bmatrix} $0
 endsnippet
 
-
 context "math()"
 snippet norm "norm" iA
 \|$1\|$0
 endsnippet
-
-context "math()"
-snippet () "left( right)" iA
-\left( ${1:${VISUAL}} \right) $0
-endsnippet
-
-snippet lr( "left( right)" iA
-\left( ${1:${VISUAL}} \right) $0
-endsnippet
-
-snippet lr| "left| right|" iA
-\left| ${1:${VISUAL}} \right| $0
-endsnippet
-
-snippet lr{ "left\{ right\}" iA
-\left\\{ ${1:${VISUAL}} \right\\} $0
-endsnippet
-
-snippet lrb "left\{ right\}" iA
-\left\\{ ${1:${VISUAL}} \right\\} $0
-endsnippet
-
-snippet lr[ "left[ right]" iA
-\left[ ${1:${VISUAL}} \right] $0
-endsnippet
-
-snippet lra "leftangle rightangle" iA
-\left<${1:${VISUAL}} \right>$0
-endsnippet
-
 
 context "math()"
 snippet EE "geq" iA
@@ -246,17 +316,39 @@ snippet AA "forall" iA
 endsnippet
 
 context "math()"
+snippet nsg "normal sub group" i
+\triangleleft $0
+endsnippet
+
+context "math()"
 snippet cc "subset" Ai
 \subset 
 endsnippet
+
+context "math()"
+snippet ceq "subset equals" Ai
+\subseteq 
+endsnippet
+
 
 context "math()"
 snippet set "set" wA
 \\{$1\\} $0
 endsnippet
 
+context "math()"
+snippet sm "set minus, backslash" i
+\setminus 
+endsnippet
+
+context "math()"
 snippet notin "not in " iA
 \not\in 
+endsnippet
+
+context "math()"
+snippet ni "not in" i
+\not $0
 endsnippet
 
 context "math()"
@@ -279,7 +371,7 @@ endsnippet
 priority 100
 context "math()"
 snippet -> "to" iA
-\to
+\to 
 endsnippet
 
 priority 200
@@ -307,7 +399,14 @@ snippet ~~ "~" iA
 \sim 
 endsnippet
 
+snippet ~- "~" iA
+\nsim 
+endsnippet
 
+
+snippet \= "neq" iA
+\neq 
+endsnippet
 
 snippet <= "leq" iA
 \le 
@@ -318,7 +417,7 @@ snippet >= "geq" iA
 endsnippet
 
 snippet => "implies" Ai
-\implies
+\implies 
 endsnippet
 
 snippet =< "implied by" Ai
@@ -332,20 +431,13 @@ endsnippet
 
 context "math()"
 snippet <> "left right arrow" Ai
-\Leftrightarrow	
-endsnippet
-
-priority 100
-context "math()"
-snippet -> "to" iA
-\to 
+\Leftrightarrow 
 endsnippet
 
 context "math()"
-snippet !> "mapsto" iA
-\mapsto 
+snippet MC "Math Cal" i
+\mathcal{$1} $2
 endsnippet
-
 
 context "math()"
 snippet RR "Real Numbers" iA
@@ -363,11 +455,11 @@ snippet NN "Natural Numbers" iA
 endsnippet
 
 snippet QQ "Q" iA
-\Q
+\mathbb{Q}
 endsnippet
 
 snippet ZZ "Z" iA
-\Z
+\mathbb{Z}
 endsnippet
 
 snippet QED "QED to the right" iA
@@ -375,17 +467,76 @@ snippet QED "QED to the right" iA
 endsnippet
 
 
-context "math()"
-snippet "'([a,b,g,d,e,z,t,i,k,l,s,o,A,B,G,D,E,Z,T,I,K,L,S,O])" "Greek Letters" r
-`!p snip.rv = keywords[match.group(1)]`
+
+
+###General Formation###
+snippet sub "subsection" i
+
+%%%%%%%%%%%%
+\subsection{}
+$0
+endsnippet
+
+snippet tcb "tcolorbox" i
+\begin{tcolorbox}
+	${1:${VISUAL}}
+\end{tcolorbox}
+endsnippet
+
+snippet thm "Theorem" i
+\begin{thm}
+	${1:${VISUAL}}
+\end{thm}
+endsnippet
+
+snippet cor "Corollary" i
+\begin{cor}
+	${1:${VISUAL}}
+\end{cor}
+endsnippet
+
+snippet def "Definition" i
+\begin{definition}
+	${1:${VISUAL}}
+\end{definition}
+endsnippet
+
+snippet exm "Example" i
+\begin{example}
+	${1:${VISUAL}}
+\end{example}
+endsnippet
+
+snippet exr "Exercise" i
+\begin{Exercise}
+	${1:${VISUAL}}
+\end{Exercise}
+endsnippet
+
+snippet prf "Proof" i
+\begin{proof}
+	${1:${VISUAL}}
+\end{proof}
+endsnippet
+
+snippet beg "begin{} / end{}" b
+\begin{$1}
+	$0
+\end{$1}
+endsnippet
+
+snippet fig "figure no caption" i
+\begin{figure}[h]
+\centering
+\includegraphics[width=${1:0.7}\linewitdh]{$2}
+\end{figure}
+$0
 endsnippet
 
 
 
-
-
 snippet enum "Enumerate" b
-\begin{enumerate}
+\begin{enumerate}[label=(\roman*)]
 	\item $0
 \end{enumerate}
 endsnippet
@@ -404,4 +555,61 @@ endsnippet
 
 snippet pac "Package" b
 \usepackage[${1:options}]{${2:package}}$0
+endsnippet
+
+snippet dm "Math Displayed(non automatic wA)" w
+\[
+${1:${VISUAL}}
+.\] $0
+endsnippet
+
+snippet im "Math Inline(non automatic wA)" w
+\(${1:${VISUAL}}\)$0
+endsnippet
+
+snippet mk "Math" wA
+$${1}$`!p
+if t[2] and t[2][0] not in [',', '.', '?', '-', ' ']:
+    snip.rv = ' '
+else:
+    snip.rv = ''
+`$2
+endsnippet
+
+
+snippet ali "Align" b
+\begin{align*}
+	${1:${VISUAL}}
+.\end{align*}
+endsnippet
+
+###Brackets###
+
+context "math()"
+snippet () "left( right)" iA
+\left( ${1:${VISUAL}} \right) $0
+endsnippet
+
+snippet lr( "left( right)" iA
+\left( ${1:${VISUAL}} \right) $0
+endsnippet
+
+snippet lr| "left| right|" iA
+\left| ${1:${VISUAL}} \right| $0
+endsnippet
+
+snippet lr{ "left\{ right\}" iA
+\left\\{ ${1:${VISUAL}} \right\\} $0
+endsnippet
+
+snippet lrb "left\{ right\}" iA
+\left\\{ ${1:${VISUAL}} \right\\} $0
+endsnippet
+
+snippet lr[ "left[ right]" iA
+\left[ ${1:${VISUAL}} \right] $0
+endsnippet
+
+snippet lra "leftangle rightangle" iA
+\left<${1:${VISUAL}} \right> $0
 endsnippet
