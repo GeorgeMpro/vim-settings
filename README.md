@@ -11,9 +11,5 @@ These files are set up to streamline editing and compiling LaTeX documents in bo
 - **packages.tex**: LaTeX package imports for streamlined use in documents.
 - **tex.snippets**: UltiSnips snippets for LaTeX to mostly for mathemathical formulas and advanced math courses.
 
-## Installation
-1. Clone the repository to your home directory:
-   ```bash
-   git clone <your-repo-url> ~
 ## Contributing
 Feel free to contribute, suggest improvements, or raise issues.
