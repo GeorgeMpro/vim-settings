@@ -1,0 +1,50 @@
+"Change display number
+set nu rnu
+
+" Enable line numbers and relative line numbers
+set nu
+set relativenumber
+
+"move inside paragraph as in separate line
+nnoremap j gj
+nnoremap k gk
+
+" Share clipboard with system
+set clipboard^=unnamedplus,unnamed
+
+if has('ide')
+
+	" Reformat code with ',f'
+	map <leader>f <Action>(ReformatCode)
+
+	" Run the current file with ',r'
+	map <leader>r <Action>(Run)
+
+	" Debug the current file with ',d'
+	map <leader>d <Action>(Debug)
+
+	" Go to previous method with '[['
+	map [[ <Action>(MethodUp)
+
+	" Go to next method with ']]'
+	map ]] <Action>(MethodDown)
+
+	" Split window vertically with ',wv'
+	map <leader>wv <Action>(SplitVertically)
+
+	map <leader>ws <Action>(SplitHorizontally)
+
+	map <leader>wu <Action>(Unsplit)
+
+	map <leader>ww <Action>(GotoNextSplit)
+	"move the current window to the other split group
+	"map <leader>ww <Action>(MoveEditorToOppositeTabGroup)
+
+	" -- GoTo keybinding --
+	map gd <Action>(GotoDeclaration)
+	map ge <Action>(GotoNextError)
+	map gi <Action>(GotoImplementation)
+	map gt <Action>(GotoTypeDeclaration)
+	map gT <Action>(GotoTest)
+
+endif
